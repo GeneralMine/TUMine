@@ -1,9 +1,9 @@
-package ga.tum-gaming.tumine;
+package ga.tumgaming.tumine;
 
-import ga.tum-gaming.tumine.listeners.ChatListener;
-import ga.tum-gaming.tumine.listeners.JoinListener;
-import ga.tum-gaming.tumine.listeners.QuitListener;
-import ga.tum-gaming.tumine.util.Config;
+import ga.tumgaming.tumine.listeners.ChatListener;
+import ga.tumgaming.tumine.listeners.JoinListener;
+import ga.tumgaming.tumine.listeners.QuitListener;
+import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;

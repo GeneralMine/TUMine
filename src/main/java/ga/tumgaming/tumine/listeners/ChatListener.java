@@ -1,6 +1,6 @@
-package ga.tum-gaming.tumine.listeners;
+package ga.tumgaming.tumine.listeners;
 
-import ga.tum-gaming.tumine.util.Config;
+import ga.tumgaming.tumine.util.Config;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
