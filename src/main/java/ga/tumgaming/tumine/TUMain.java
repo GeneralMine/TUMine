@@ -3,6 +3,7 @@ package ga.tumgaming.tumine;
 import ga.tumgaming.tumine.listeners.ChatListener;
 import ga.tumgaming.tumine.listeners.JoinListener;
 import ga.tumgaming.tumine.listeners.QuitListener;
+import ga.tumgaming.tumine.listeners.SleepListener;
 import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -11,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
-public class SpellsMain extends JavaPlugin {
+public class TUMain extends JavaPlugin {
 
     private static Config ranks;
 
@@ -20,7 +21,6 @@ public class SpellsMain extends JavaPlugin {
     @Override
     public void onEnable() {
         this.plugin = this;
-
         ranks = new Config(this, "ranks");
 
         registerEvents();
@@ -43,10 +43,15 @@ public class SpellsMain extends JavaPlugin {
         pluginManager.registerEvents(new JoinListener(ranks), plugin);
         pluginManager.registerEvents(new QuitListener(), plugin);
         pluginManager.registerEvents(new ChatListener(ranks), plugin);
+        pluginManager.registerEvents(new SleepListener(), plugin);
     }
 
     public static Config getRanksConfig() {
         return ranks;
+    }
+
+    public static Plugin getPlugin() {
+        return plugin;
     }
 
 }

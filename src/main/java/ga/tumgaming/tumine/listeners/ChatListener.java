@@ -1,9 +1,9 @@
 package ga.tumgaming.tumine.listeners;
 
-import ga.tumgaming.tumine.util.Config;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+        import ga.tumgaming.tumine.util.Config;
+        import org.bukkit.event.EventHandler;
+        import org.bukkit.event.Listener;
+        import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
 
@@ -20,4 +20,5 @@ public class ChatListener implements Listener {
 
         event.setFormat(ranks.get(event.getPlayer().getName()) + "§8 | §7" + event.getPlayer().getDisplayName() + "§8: " + "§f"  + event.getMessage());
     }
+
 }
