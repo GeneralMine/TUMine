@@ -4,6 +4,9 @@ import ga.tumgaming.tumine.listeners.ChatListener;
 import ga.tumgaming.tumine.listeners.JoinListener;
 import ga.tumgaming.tumine.listeners.QuitListener;
 import ga.tumgaming.tumine.listeners.SleepListener;
+import ga.tumgaming.tumine.shopKeeper.InteractListener;
+import ga.tumgaming.tumine.shopKeeper.InventoryListeners;
+import ga.tumgaming.tumine.shopKeeper.ShopUtil;
 import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -16,14 +19,20 @@ public class TUMain extends JavaPlugin {
 
     private static Config ranks;
 
+    private static Config shops;
+
     private static Plugin plugin;
 
     @Override
     public void onEnable() {
         this.plugin = this;
+
         ranks = new Config(this, "ranks");
+        shops = new Config(this, "shopkeeper");
 
         registerEvents();
+
+        ShopUtil.addShopmerald();
 
         log("Plugin erfolgreich geladen");
     }
@@ -44,10 +53,17 @@ public class TUMain extends JavaPlugin {
         pluginManager.registerEvents(new QuitListener(), plugin);
         pluginManager.registerEvents(new ChatListener(ranks), plugin);
         pluginManager.registerEvents(new SleepListener(), plugin);
+
+        pluginManager.registerEvents(new InteractListener(shops), plugin);
+        pluginManager.registerEvents(new InventoryListeners(), plugin);
     }
 
     public static Config getRanksConfig() {
         return ranks;
+    }
+
+    public static Config getShopsConfig() {
+        return shops;
     }
 
     public static Plugin getPlugin() {
