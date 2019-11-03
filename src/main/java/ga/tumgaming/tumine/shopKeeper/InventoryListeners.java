@@ -39,7 +39,8 @@ public class InventoryListeners implements Listener {
         if(entity instanceof Villager) {
             Villager villager = (Villager) entity;
             if(villager.getCustomName().equalsIgnoreCase("§6Shopkeeper")) {
-                statusMap.put(player, (Villager) entity);
+                if(statusMap.containsKey(player)) statusMap.replace(player, villager);
+                else statusMap.put(player, (Villager) entity);
                 event.setCancelled(true);
                 if(isOwner(player, villager)) {
                     player.openInventory(edit);
@@ -63,7 +64,7 @@ public class InventoryListeners implements Listener {
         } else {
             player.sendMessage("OWNER");
             player.openInventory((Inventory) TUMain.getShopsConfig().get(statusMap.get(player).getUniqueId().toString() + ".offers"));
-            // TODO handle purches
+            // TODO handle purchase
         }
     }
      */

@@ -29,11 +29,13 @@ public class InteractListener implements Listener {
     private Inventory storage;
     private Inventory payment;
 
+    /*
     public static final String configName = "§aConfig";
     public static final String storageName = "§cStorage";
     public static final String paymentName = "§bPayment";
 
     public static final String identifier = "§6Shopkeeper";
+    */
 
     public InteractListener(Config config) {
         this.shops = config;
