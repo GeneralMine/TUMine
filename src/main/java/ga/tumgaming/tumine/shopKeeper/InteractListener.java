@@ -29,13 +29,11 @@ public class InteractListener implements Listener {
     private Inventory storage;
     private Inventory payment;
 
-    /*
-    public static final String configName = "§aConfig";
-    public static final String storageName = "§cStorage";
-    public static final String paymentName = "§bPayment";
+    public static final String offersName = "§eOffers";
+    public static final String configName = "§cConfig";
+    public static final String storageName = "§eStorage";
+    public static final String paymentName = "§aPayment";
 
-    public static final String identifier = "§6Shopkeeper";
-    */
 
     public InteractListener(Config config) {
         this.shops = config;
@@ -69,12 +67,16 @@ public class InteractListener implements Listener {
         villager.setCollidable(false);
         villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255), true);
 
-        offers = Bukkit.createInventory(villager, 9 * 3);
-        config = Bukkit.createInventory(villager, 9 * 3);
-        storage = Bukkit.createInventory(villager, 9 * 3);
-        payment = Bukkit.createInventory(villager, 9 * 3);
+        offers = Bukkit.createInventory(villager, 9 * 3, "§eOffers");
+        config = Bukkit.createInventory(villager, 9 * 3, "§cConfig");
+        storage = Bukkit.createInventory(villager, 9 * 3, "§eStorage");
+        payment = Bukkit.createInventory(villager, 9 * 3, "§aPayment");
 
         shops.set(villager.getUniqueId().toString() + ".owner", player.getUniqueId().toString());
+        shops.set(villager.getUniqueId().toString() + ".offersTitle", "§eOffers");
+        shops.set(villager.getUniqueId().toString() + ".configTitle", "§cConfig");
+        shops.set(villager.getUniqueId().toString() + ".storageTitle", "§eStorage");
+        shops.set(villager.getUniqueId().toString() + ".paymentTitle", "§aPayment");
         shops.set(villager.getUniqueId().toString() + ".offers", offers.getContents());
         shops.set(villager.getUniqueId().toString() + ".config", config.getContents());
         shops.set(villager.getUniqueId().toString() + ".storage", storage.getContents());

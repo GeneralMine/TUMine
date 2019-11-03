@@ -25,7 +25,7 @@ public class InventoryListeners implements Listener {
     private static Inventory edit;
 
     public InventoryListeners() {
-        edit = Bukkit.createInventory(null, 9);
+        edit = Bukkit.createInventory(null, 9, "§6Edit");
         edit.setItem(2, createItem(Material.REDSTONE_BLOCK, "§cConfig"));
         edit.setItem(4, createItem(Material.CHEST, "§eStorage"));
         edit.setItem(6, createItem(Material.DIAMOND_BLOCK, "§aPayment"));
@@ -51,23 +51,34 @@ public class InventoryListeners implements Listener {
         }
     }
 
-    /*
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         String inventoryTitle = event.getView().getTitle();
 
-        if(statusMap.containsKey(player)) return;
-        if(isOwner(player, statusMap.get(player))) {
-            player.sendMessage("CUSTOMER");
-            player.openInventory(edit);
-        } else {
-            player.sendMessage("OWNER");
-            player.openInventory((Inventory) TUMain.getShopsConfig().get(statusMap.get(player).getUniqueId().toString() + ".offers"));
-            // TODO handle purchase
+        if(inventoryTitle.equalsIgnoreCase("§6Edit")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cConfig")) player.openInventory(buildInventory("config", statusMap.get(player)));
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eStorage")) player.openInventory(buildInventory("storage", statusMap.get(player)));
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aPayment")) player.openInventory(buildInventory("payment", statusMap.get(player)));
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§cConfig")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() != null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            //todo
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§eStorage")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() != null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            //todo
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§aPayment")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() != null || event.getCurrentItem().getType().equals(Material.AIR)) return;
         }
     }
-     */
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
@@ -90,7 +101,11 @@ public class InventoryListeners implements Listener {
 
     private static Inventory buildInventory(String name, Villager villager) {
         ArrayList<ItemStack> itemStacks = TUMain.getShopsConfig().get(villager.getUniqueId().toString() + "." + name);
-        Inventory inventory = Bukkit.createInventory(villager, 9 * 3);
+        if(itemStacks == null) {
+            itemStacks = new ArrayList<>();
+        }
+        String title = TUMain.getShopsConfig().get(villager.getUniqueId().toString() + "." + name + "Title");
+        Inventory inventory = Bukkit.createInventory(villager, 9 * 3, title);
         for(ItemStack itemStack : itemStacks) {
             if(itemStack == null || itemStack.getType() == Material.AIR) inventory.addItem(new ItemStack(Material.AIR));
             else inventory.addItem(itemStack);
