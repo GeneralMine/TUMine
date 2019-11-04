@@ -82,6 +82,8 @@ public class InteractListener implements Listener {
         shops.set(villager.getUniqueId().toString() + ".storage", storage.getContents());
         shops.set(villager.getUniqueId().toString() + ".payment", payment.getContents());
 
+        shops.reload();
+
         if(itemStack.getAmount() > 1) {
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
         } else {

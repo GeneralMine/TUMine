@@ -1,6 +1,7 @@
 package ga.tumgaming.tumine.shopKeeper;
 
 import ga.tumgaming.tumine.TUMain;
+import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -82,7 +83,24 @@ public class InventoryListeners implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        // TODO: 30.10.19 if inventory equals custom Shop inventories save to FILE
+        Player player = (Player) event.getPlayer();
+        String inventoryTitle = event.getView().getTitle();
+        Config shops = TUMain.getShopsConfig();
+
+        if(!statusMap.containsKey(player)) return;
+
+        Villager villager = statusMap.get(player);
+
+        if(inventoryTitle.equalsIgnoreCase("§eStorage")) {
+            shops.set(villager.getUniqueId().toString() + ".storage", event.getInventory().getContents());
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§cConfig")) {
+            shops.set(villager.getUniqueId().toString() + ".config", event.getInventory().getContents());
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§aPayment")) {
+            shops.set(villager.getUniqueId().toString() + ".payment", event.getInventory().getContents());
+        }
+
     }
 
     private static boolean isOwner(Player player, Villager villager) {

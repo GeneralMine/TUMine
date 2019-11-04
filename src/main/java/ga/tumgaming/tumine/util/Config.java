@@ -44,4 +44,9 @@ public class Config {
         config.set(path, value);
         save();
     }
+
+    public void reload() {
+        save();
+        config = YamlConfiguration.loadConfiguration(file);
+    }
 }
