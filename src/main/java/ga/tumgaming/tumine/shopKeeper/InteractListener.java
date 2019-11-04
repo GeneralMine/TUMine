@@ -78,6 +78,9 @@ public class InteractListener implements Listener {
         shops.set(villager.getUniqueId().toString() + ".storageTitle", "§eStorage");
         shops.set(villager.getUniqueId().toString() + ".paymentTitle", "§aPayment");
         shops.set(villager.getUniqueId().toString() + ".offers", offers.getContents());
+        for(int i = 9; i < 18; i++) {
+            config.setItem(i, createItem(Material.GRAY_STAINED_GLASS_PANE, "§eOffer #" + (i-8)));
+        }
         shops.set(villager.getUniqueId().toString() + ".config", config.getContents());
         shops.set(villager.getUniqueId().toString() + ".storage", storage.getContents());
         shops.set(villager.getUniqueId().toString() + ".payment", payment.getContents());
@@ -89,5 +92,14 @@ public class InteractListener implements Listener {
         } else {
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
+    }
+
+    private ItemStack createItem(Material material, String name) {
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemStack.setItemMeta(itemMeta);
+
+        return itemStack;
     }
 }

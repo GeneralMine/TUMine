@@ -37,7 +37,9 @@ public class Config {
     }
 
     public <T> T get(String path) {
-        return (T) config.get(path);
+        T value = (T) config.get(path);
+        reload();
+        return value;
     }
 
     public void set(String path, Object value) {
