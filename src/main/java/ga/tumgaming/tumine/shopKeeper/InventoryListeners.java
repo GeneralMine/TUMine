@@ -4,6 +4,7 @@ import ga.tumgaming.tumine.TUMain;
 import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -19,6 +20,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 
 public class InventoryListeners implements Listener {
 
@@ -90,7 +93,7 @@ public class InventoryListeners implements Listener {
             if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aPayment")) player.openInventory(buildInventory("payment", statusMap.get(player)));
         }
         else if(inventoryTitle.equalsIgnoreCase("§cConfig")) {
-            if(event.getCurrentItem().getType().equals(Material.GRAY_STAINED_GLASS_PANE)) {
+            if(Objects.requireNonNull(event.getCurrentItem()).getType().equals(Material.GRAY_STAINED_GLASS_PANE)) {
                 event.setCancelled(true);
                 return;
             }
@@ -103,8 +106,15 @@ public class InventoryListeners implements Listener {
         }
         else if(inventoryTitle.equalsIgnoreCase("§eOffers")) {
             event.setCancelled(true);
-            if(event.getCurrentItem() != createItem(Material.GREEN_STAINED_GLASS_PANE, "§aPurchase")) return;
-            //todo handle shopping
+
+            if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            ItemStack itemStack = event.getCurrentItem();
+            if(!itemStack.hasItemMeta()) return;
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            if(!itemMeta.hasDisplayName()) return;
+            String displayName = itemMeta.getDisplayName();
+            if(!displayName.startsWith("§aPurchase Offer #")) return;
+
             //check if Buyer inventory is full
             if(isFull(player.getInventory().getStorageContents())) {
                 player.sendMessage("§8>> §7Cant handle purchase due to full player inventory");
@@ -120,14 +130,14 @@ public class InventoryListeners implements Listener {
 
             //check if Shop is stocked
             if(!storage.containsAtLeast(purchasedItem, purchasedItem.getAmount())) {
-                player.sendMessage("§8>> §7Shop is not stocked please contact the owner to restock it");
+                player.sendMessage("§8>> §7Shop is not stocked please contact §e" + getOwner(villager) + " §7to restock it");
                 return;
             }
 
             //check if Payment is not full
             Inventory payment = buildInventory("payment", villager);
             if(isFull(payment)) {
-                player.sendMessage("§8>> §7The shops cashbox is full please contact the owner to empty it");
+                player.sendMessage("§8>> §7The shops cashbox is full please contact §e"+ getOwner(villager) + " §7to empty it");
                 return;
             }
 
@@ -137,12 +147,16 @@ public class InventoryListeners implements Listener {
                 return;
             }
 
-            storage.remove(purchasedItem);
+            removeItems(storage, purchasedItem.getType(), purchasedItem.getAmount());
             payment.addItem(price);
-            player.getInventory().remove(price);
+            removeItems(player.getInventory(), price.getType(), price.getAmount());
             player.getInventory().addItem(purchasedItem);
-            player.sendMessage("§8>> §You successfully purchased §a" + purchasedItem.getAmount() + " " + purchasedItem.getItemMeta().getLocalizedName() + "§7 for §c" + price.getAmount() + " " + price.getItemMeta().getLocalizedName());
-            //todo handle Purchase
+            Config shops = TUMain.getShopsConfig();
+            shops.set(villager.getUniqueId().toString() + ".storage", storage.getContents());
+            shops.set(villager.getUniqueId().toString() + ".payment", payment.getContents());
+            shops.reload();
+
+            player.sendMessage("§8>> §7You successfully purchased §a" + purchasedItem.getAmount() + " " + purchasedItem.getType().toString().toLowerCase() + "§7 for §c" + price.getAmount() + " " + price.getType().toString().toLowerCase());
         }
     }
 
@@ -228,11 +242,11 @@ public class InventoryListeners implements Listener {
                 offers.setItem(i + 18, new ItemStack(Material.AIR));
             } else if((top == null || top.getType().equals(Material.AIR)) || (bottom == null || bottom.getType().equals(Material.AIR))) {
                 offers.setItem(i, new ItemStack(Material.AIR));
-                offers.setItem(i + 9, new ItemStack(Material.BARRIER));
+                offers.setItem(i + 9, createItem(Material.RED_STAINED_GLASS_PANE, "§cEmpty Offer"));
                 offers.setItem(i + 18, new ItemStack(Material.AIR));
             } else if((top != null || !top.getType().equals(Material.AIR)) && (bottom != null || !bottom.getType().equals(Material.AIR))) {
                 offers.setItem(i, top);
-                offers.setItem(i + 9, createItem(Material.GREEN_STAINED_GLASS_PANE, "§aPurchase Offer #" + (i+1)));
+                offers.setItem(i + 9, createItem(Material.LIME_STAINED_GLASS_PANE, "§aPurchase Offer #" + (i+1)));
                 offers.setItem(i + 18, bottom);
             }
         }
@@ -240,6 +254,11 @@ public class InventoryListeners implements Listener {
         return offers;
     }
 
+    /**
+     * Checks if a given inventory is full
+     * @param inventory the given inventory
+     * @return if its full
+     */
     private static boolean isFull(Inventory inventory) {
          boolean isfull = true;
          for(int i = 0; i < inventory.getSize(); i++) {
@@ -252,6 +271,11 @@ public class InventoryListeners implements Listener {
          return isfull;
     }
 
+    /**
+     * Checks if an given ItemStackArray is full
+     * @param itemStacks the given array
+     * @return if its full
+     */
     private static boolean isFull(ItemStack[] itemStacks) {
         boolean isfull = true;
         for(int i = 0; i < itemStacks.length; i++) {
@@ -262,5 +286,36 @@ public class InventoryListeners implements Listener {
             }
         }
         return isfull;
+    }
+
+    /*
+    Credits to:
+    https://bukkit.org/members/blablubbabc.64583/
+    Src found:
+    https://bukkit.org/threads/how-do-i-remove-a-specific-amount-of-items-from-inventory.312565/
+     */
+    public static void removeItems(Inventory inventory, Material type, int amount) {
+        if (amount <= 0) return;
+        int size = inventory.getSize();
+        for (int slot = 0; slot < size; slot++) {
+            ItemStack is = inventory.getItem(slot);
+            if (is == null) continue;
+            if (type == is.getType()) {
+                int newAmount = is.getAmount() - amount;
+                if (newAmount > 0) {
+                    is.setAmount(newAmount);
+                    break;
+                } else {
+                    inventory.clear(slot);
+                    amount = -newAmount;
+                    if (amount == 0) break;
+                }
+            }
+        }
+    }
+
+    private static String getOwner(Villager villager) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(TUMain.getShopsConfig().get(villager.getUniqueId().toString() + ".owner")));
+        return player.getName();
     }
 }
