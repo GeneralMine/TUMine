@@ -298,24 +298,24 @@ public class InventoryListeners implements Listener {
         if (amount <= 0) return;
         int size = inventory.getSize();
         for (int slot = 0; slot < size; slot++) {
-            ItemStack is = inventory.getItem(slot);
-            if (is == null) continue;
-            if (type == is.getType()) {
-                int newAmount = is.getAmount() - amount;
-                if (newAmount > 0) {
-                    is.setAmount(newAmount);
-                    break;
-                } else {
-                    inventory.clear(slot);
-                    amount = -newAmount;
-                    if (amount == 0) break;
-                }
-            }
+        ItemStack is = inventory.getItem(slot);
+        if (is == null) continue;
+        if (type == is.getType()) {
+        int newAmount = is.getAmount() - amount;
+        if (newAmount > 0) {
+        is.setAmount(newAmount);
+        break;
+        } else {
+        inventory.clear(slot);
+        amount = -newAmount;
+        if (amount == 0) break;
         }
-    }
+        }
+        }
+        }
 
-    private static String getOwner(Villager villager) {
+private static String getOwner(Villager villager) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(TUMain.getShopsConfig().get(villager.getUniqueId().toString() + ".owner")));
         return player.getName();
-    }
-}
+        }
+        }
