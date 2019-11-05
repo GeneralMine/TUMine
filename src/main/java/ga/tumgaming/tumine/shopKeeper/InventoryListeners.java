@@ -5,13 +5,11 @@ import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -49,7 +47,7 @@ public class InventoryListeners implements Listener {
                 if(isOwner(player, villager)) {
                     player.openInventory(edit);
                 } else {
-                    player.openInventory(buildInventory("offers", villager));
+                    player.openInventory(generateOffers(buildInventory("config", villager)));
                 }
             }
         }
@@ -80,7 +78,10 @@ public class InventoryListeners implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         String inventoryTitle = event.getView().getTitle();
+        Inventory inventory = event.getInventory();
 
+        if(!statusMap.containsKey(player)) return;
+        Villager villager = statusMap.get(player);
         if(inventoryTitle.equalsIgnoreCase("§6Edit")) {
             event.setCancelled(true);
             if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
@@ -99,6 +100,49 @@ public class InventoryListeners implements Listener {
         }
         else if(inventoryTitle.equalsIgnoreCase("§aPayment")) {
             //todo
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§eOffers")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() != createItem(Material.GREEN_STAINED_GLASS_PANE, "§aPurchase")) return;
+            //todo handle shopping
+            //check if Buyer inventory is full
+            if(isFull(player.getInventory().getStorageContents())) {
+                player.sendMessage("§8>> §7Cant handle purchase due to full player inventory");
+                return;
+            }
+
+            //useful stuff
+            String name = event.getCurrentItem().getItemMeta().getDisplayName();
+            int current = Integer.parseInt(name.substring(name.length() - 1));
+            ItemStack purchasedItem = inventory.getItem(current - 1);
+            ItemStack price = inventory.getItem(current - 1 + 18);
+            Inventory storage = buildInventory("storage", villager);
+
+            //check if Shop is stocked
+            if(!storage.containsAtLeast(purchasedItem, purchasedItem.getAmount())) {
+                player.sendMessage("§8>> §7Shop is not stocked please contact the owner to restock it");
+                return;
+            }
+
+            //check if Payment is not full
+            Inventory payment = buildInventory("payment", villager);
+            if(isFull(payment)) {
+                player.sendMessage("§8>> §7The shops cashbox is full please contact the owner to empty it");
+                return;
+            }
+
+            //check if Player has Payment
+            if(!player.getInventory().containsAtLeast(price, price.getAmount())) {
+                player.sendMessage("§8>> §7Im sorry! You dont have enough of the required items to make this purchase");
+                return;
+            }
+
+            storage.remove(purchasedItem);
+            payment.addItem(price);
+            player.getInventory().remove(price);
+            player.getInventory().addItem(purchasedItem);
+            player.sendMessage("§8>> §You successfully purchased §a" + purchasedItem.getAmount() + " " + purchasedItem.getItemMeta().getLocalizedName() + "§7 for §c" + price.getAmount() + " " + price.getItemMeta().getLocalizedName());
+            //todo handle Purchase
         }
     }
 
@@ -171,4 +215,52 @@ public class InventoryListeners implements Listener {
         player.sendMessage("§7--- --- --- ---");
     }
 
+    private Inventory generateOffers(Inventory config) {
+        Inventory offers = Bukkit.createInventory(null, 9 * 3, "§eOffers");
+
+        for(int i = 0; i < 9; i++) {
+            ItemStack top = config.getItem(i);
+            ItemStack bottom = config.getItem(i + 18);
+
+            if((top == null || top.getType().equals(Material.AIR)) && (bottom == null || bottom.getType().equals(Material.AIR))) {
+                offers.setItem(i, new ItemStack(Material.AIR));
+                offers.setItem(i + 9, createItem(Material.RED_STAINED_GLASS_PANE, "§cEmpty Offer"));
+                offers.setItem(i + 18, new ItemStack(Material.AIR));
+            } else if((top == null || top.getType().equals(Material.AIR)) || (bottom == null || bottom.getType().equals(Material.AIR))) {
+                offers.setItem(i, new ItemStack(Material.AIR));
+                offers.setItem(i + 9, new ItemStack(Material.BARRIER));
+                offers.setItem(i + 18, new ItemStack(Material.AIR));
+            } else if((top != null || !top.getType().equals(Material.AIR)) && (bottom != null || !bottom.getType().equals(Material.AIR))) {
+                offers.setItem(i, top);
+                offers.setItem(i + 9, createItem(Material.GREEN_STAINED_GLASS_PANE, "§aPurchase Offer #" + (i+1)));
+                offers.setItem(i + 18, bottom);
+            }
+        }
+
+        return offers;
+    }
+
+    private static boolean isFull(Inventory inventory) {
+         boolean isfull = true;
+         for(int i = 0; i < inventory.getSize(); i++) {
+             ItemStack current = inventory.getItem(i);
+             if(current == null || current.getType().equals(Material.AIR)) {
+                 isfull = false;
+                 break;
+             }
+         }
+         return isfull;
+    }
+
+    private static boolean isFull(ItemStack[] itemStacks) {
+        boolean isfull = true;
+        for(int i = 0; i < itemStacks.length; i++) {
+            ItemStack current = itemStacks[i];
+            if(current == null || current.getType().equals(Material.AIR)) {
+                isfull = false;
+                break;
+            }
+        }
+        return isfull;
+    }
 }
