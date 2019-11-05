@@ -63,7 +63,7 @@ public class SleepListener implements Listener {
     }
 
     private static boolean checkForDay() {
-        return inBed.size() >= Bukkit.getOnlinePlayers().size();
+        return inBed.size() >= (Bukkit.getOnlinePlayers().size()/2);
     }
 
     private static void setTimeToDay() {
@@ -71,7 +71,7 @@ public class SleepListener implements Listener {
     }
 
     private static double getProgress() {
-        return (double) inBed.size() / Bukkit.getOnlinePlayers().size();
+        return (double) inBed.size() / (Bukkit.getOnlinePlayers().size()/2);
     }
 
 
