@@ -71,7 +71,10 @@ public class SleepListener implements Listener {
     }
 
     private static double getProgress() {
-        return (double) inBed.size() / (Bukkit.getOnlinePlayers().size()/2);
+        double progress = (double) inBed.size() / ((double) Bukkit.getOnlinePlayers().size()/2);
+        if(progress >= 1.0) return 1.0;
+        else if(progress <= 0.0) return 0.0;
+        else return progress;
     }
 
 

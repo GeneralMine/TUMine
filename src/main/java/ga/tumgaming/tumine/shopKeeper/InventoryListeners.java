@@ -33,7 +33,7 @@ public class InventoryListeners implements Listener {
 
     public InventoryListeners() {
         edit = Bukkit.createInventory(null, 9, "§6Edit");
-        edit.setItem(5, createItem(Material.REDSTONE_BLOCK, "§cConfig"));
+        edit.setItem(4, createItem(Material.REDSTONE_BLOCK, "§cConfig"));
         edit.setItem(7, createItem(Material.CHEST, "§eStorage"));
         edit.setItem(8, createItem(Material.DIAMOND_BLOCK, "§aPayment"));
         edit.setItem(0, createItem(Material.GREEN_TERRACOTTA, "§aOrigin"));
@@ -52,17 +52,17 @@ public class InventoryListeners implements Listener {
         profession.setItem(1, createItem(Material.BARRIER, "§4None"));
         profession.setItem(2, createItem(Material.BEEF, "§cButcher"));
         profession.setItem(3, createItem(Material.COAL, "§8Armorer"));
-        profession.setItem(4, createItem(Material.MAP, "§fCartographer"));
+        profession.setItem(4, createItem(Material.MAP, "§7Cartographer"));
         profession.setItem(5, createItem(Material.EXPERIENCE_BOTTLE, "§bCleric"));
         profession.setItem(6, createItem(Material.WHEAT, "§eFarmer"));
         profession.setItem(7, createItem(Material.COD, "§9Fisherman"));
 
-        profession.setItem(10, createItem(Material.STRING, "§fFletcher"));
+        profession.setItem(10, createItem(Material.STRING, "§7Fletcher"));
         profession.setItem(11, createItem(Material.LEATHER, "§6Leatherworker"));
         profession.setItem(12, createItem(Material.BOOK, "§eLibrarian"));
         profession.setItem(13, createItem(Material.BRICK, "§7Mason"));
         profession.setItem(14, createItem(Material.WHITE_STAINED_GLASS, "§7Nitwit"));
-        profession.setItem(15, createItem(Material.WHITE_WOOL, "§fShepperd"));
+        profession.setItem(15, createItem(Material.WHITE_WOOL, "§7Shepperd"));
         profession.setItem(16, createItem(Material.IRON_PICKAXE, "§8Smith"));
     }
 
@@ -136,7 +136,7 @@ public class InventoryListeners implements Listener {
         else if(inventoryTitle.equalsIgnoreCase("§aPayment")) {
             //todo
         }
-        else if(inventoryTitle.equalsIgnoreCase("§eProfession")) {
+        else if(inventoryTitle.equalsIgnoreCase("§eOrigin")) {
             event.setCancelled(true);
             if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
             String clicked = event.getCurrentItem().getItemMeta().getDisplayName();
@@ -165,7 +165,7 @@ public class InventoryListeners implements Listener {
                     return;
             }
         }
-        else if(inventoryTitle.equalsIgnoreCase("§eOrigin")) {
+        else if(inventoryTitle.equalsIgnoreCase("§eProfession")) {
             event.setCancelled(true);
             if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
             String clicked = event.getCurrentItem().getItemMeta().getDisplayName();
@@ -174,16 +174,16 @@ public class InventoryListeners implements Listener {
                 case "§4None": villager.setProfession(Villager.Profession.NONE); return;
                 case "§cButcher": villager.setProfession(Villager.Profession.BUTCHER); return;
                 case "§8Armorer": villager.setProfession(Villager.Profession.ARMORER); return;
-                case "§fCartographer": villager.setProfession(Villager.Profession.CARTOGRAPHER); return;
+                case "§7Cartographer": villager.setProfession(Villager.Profession.CARTOGRAPHER); return;
                 case "§bCleric": villager.setProfession(Villager.Profession.CLERIC); return;
                 case "§eFarmer": villager.setProfession(Villager.Profession.FARMER); return;
                 case "§9Fisherman": villager.setProfession(Villager.Profession.FISHERMAN); return;
-                case "§fFletcher": villager.setProfession(Villager.Profession.FLETCHER); return;
+                case "§7Fletcher": villager.setProfession(Villager.Profession.FLETCHER); return;
                 case "§6Leatherworker": villager.setProfession(Villager.Profession.LEATHERWORKER); return;
                 case "§eLibrarian": villager.setProfession(Villager.Profession.LIBRARIAN); return;
                 case "§7Mason": villager.setProfession(Villager.Profession.MASON); return;
                 case "§7Nitwit": villager.setProfession(Villager.Profession.NITWIT); return;
-                case "§fShepperd": villager.setProfession(Villager.Profession.SHEPHERD); return;
+                case "§7Shepperd": villager.setProfession(Villager.Profession.SHEPHERD); return;
                 case "§8Smith": villager.setProfession(Villager.Profession.TOOLSMITH); return;
             }
         }
