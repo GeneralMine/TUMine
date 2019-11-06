@@ -28,12 +28,42 @@ public class InventoryListeners implements Listener {
     private static HashMap<Player, Villager> statusMap = new HashMap<>();
 
     private static Inventory edit;
+    private static Inventory origin;
+    private static Inventory profession;
 
     public InventoryListeners() {
         edit = Bukkit.createInventory(null, 9, "§6Edit");
-        edit.setItem(2, createItem(Material.REDSTONE_BLOCK, "§cConfig"));
-        edit.setItem(4, createItem(Material.CHEST, "§eStorage"));
-        edit.setItem(6, createItem(Material.DIAMOND_BLOCK, "§aPayment"));
+        edit.setItem(5, createItem(Material.REDSTONE_BLOCK, "§cConfig"));
+        edit.setItem(7, createItem(Material.CHEST, "§eStorage"));
+        edit.setItem(8, createItem(Material.DIAMOND_BLOCK, "§aPayment"));
+        edit.setItem(0, createItem(Material.GREEN_TERRACOTTA, "§aOrigin"));
+        edit.setItem(1, createItem(Material.YELLOW_TERRACOTTA, "§eProfession"));
+
+        origin = Bukkit.createInventory(null, 9, "§eOrigin");
+        origin.setItem(0, createItem(Material.SAND, "§eDesert"));
+        origin.setItem(1, createItem(Material.JUNGLE_LOG, "§aJungle"));
+        origin.setItem(4, createItem(Material.GRASS_BLOCK, "§2Plains"));
+        origin.setItem(2, createItem(Material.ACACIA_LOG, "§6Savanna"));
+        origin.setItem(6, createItem(Material.SNOW_BLOCK, "§9Snow"));
+        origin.setItem(7, createItem(Material.SLIME_BALL, "§aSwamp"));
+        origin.setItem(8, createItem(Material.SPRUCE_LOG, "§7Taiga"));
+
+        profession = Bukkit.createInventory(null, 9*2, "§eProfession");
+        profession.setItem(1, createItem(Material.BARRIER, "§4None"));
+        profession.setItem(2, createItem(Material.BEEF, "§cButcher"));
+        profession.setItem(3, createItem(Material.COAL, "§8Armorer"));
+        profession.setItem(4, createItem(Material.MAP, "§fCartographer"));
+        profession.setItem(5, createItem(Material.EXPERIENCE_BOTTLE, "§bCleric"));
+        profession.setItem(6, createItem(Material.WHEAT, "§eFarmer"));
+        profession.setItem(7, createItem(Material.COD, "§9Fisherman"));
+
+        profession.setItem(10, createItem(Material.STRING, "§fFletcher"));
+        profession.setItem(11, createItem(Material.LEATHER, "§6Leatherworker"));
+        profession.setItem(12, createItem(Material.BOOK, "§eLibrarian"));
+        profession.setItem(13, createItem(Material.BRICK, "§7Mason"));
+        profession.setItem(14, createItem(Material.WHITE_STAINED_GLASS, "§7Nitwit"));
+        profession.setItem(15, createItem(Material.WHITE_WOOL, "§fShepperd"));
+        profession.setItem(16, createItem(Material.IRON_PICKAXE, "§8Smith"));
     }
 
     @EventHandler
@@ -91,6 +121,8 @@ public class InventoryListeners implements Listener {
             if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§cConfig")) player.openInventory(buildInventory("config", statusMap.get(player)));
             if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eStorage")) player.openInventory(buildInventory("storage", statusMap.get(player)));
             if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aPayment")) player.openInventory(buildInventory("payment", statusMap.get(player)));
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aOrigin")) player.openInventory(origin);
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§eProfession")) player.openInventory(profession);
         }
         else if(inventoryTitle.equalsIgnoreCase("§cConfig")) {
             if(Objects.requireNonNull(event.getCurrentItem()).getType().equals(Material.GRAY_STAINED_GLASS_PANE)) {
@@ -103,6 +135,57 @@ public class InventoryListeners implements Listener {
         }
         else if(inventoryTitle.equalsIgnoreCase("§aPayment")) {
             //todo
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§eProfession")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            String clicked = event.getCurrentItem().getItemMeta().getDisplayName();
+
+            switch (clicked) {
+                case "§eDesert":
+                    villager.setVillagerType(Villager.Type.DESERT);
+                    return;
+                case "§aJungle":
+                    villager.setVillagerType(Villager.Type.JUNGLE);
+                    return;
+                case "§2Plains":
+                    villager.setVillagerType(Villager.Type.PLAINS);
+                    return;
+                case "§6Savanna":
+                    villager.setVillagerType(Villager.Type.SAVANNA);
+                    return;
+                case "§9Snow":
+                    villager.setVillagerType(Villager.Type.SNOW);
+                    return;
+                case "§aSwamp":
+                    villager.setVillagerType(Villager.Type.SWAMP);
+                    return;
+                case "§7Taiga":
+                    villager.setVillagerType(Villager.Type.TAIGA);
+                    return;
+            }
+        }
+        else if(inventoryTitle.equalsIgnoreCase("§eOrigin")) {
+            event.setCancelled(true);
+            if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
+            String clicked = event.getCurrentItem().getItemMeta().getDisplayName();
+
+            switch (clicked) {
+                case "§4None": villager.setProfession(Villager.Profession.NONE); return;
+                case "§cButcher": villager.setProfession(Villager.Profession.BUTCHER); return;
+                case "§8Armorer": villager.setProfession(Villager.Profession.ARMORER); return;
+                case "§fCartographer": villager.setProfession(Villager.Profession.CARTOGRAPHER); return;
+                case "§bCleric": villager.setProfession(Villager.Profession.CLERIC); return;
+                case "§eFarmer": villager.setProfession(Villager.Profession.FARMER); return;
+                case "§9Fisherman": villager.setProfession(Villager.Profession.FISHERMAN); return;
+                case "§fFletcher": villager.setProfession(Villager.Profession.FLETCHER); return;
+                case "§6Leatherworker": villager.setProfession(Villager.Profession.LEATHERWORKER); return;
+                case "§eLibrarian": villager.setProfession(Villager.Profession.LIBRARIAN); return;
+                case "§7Mason": villager.setProfession(Villager.Profession.MASON); return;
+                case "§7Nitwit": villager.setProfession(Villager.Profession.NITWIT); return;
+                case "§fShepperd": villager.setProfession(Villager.Profession.SHEPHERD); return;
+                case "§8Smith": villager.setProfession(Villager.Profession.TOOLSMITH); return;
+            }
         }
         else if(inventoryTitle.equalsIgnoreCase("§eOffers")) {
             event.setCancelled(true);
