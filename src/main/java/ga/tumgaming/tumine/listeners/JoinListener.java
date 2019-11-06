@@ -19,7 +19,7 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage("§7 Der Spieler §e" +player.getDisplayName() + "§7 hat den Server betreten");
 
-        player.setPlayerListHeaderFooter("§b Willkommen auf §9TUM§7-§9Craft", "§bBei Problemen wende dich bitte an einen §cAdmin");
+        player.setPlayerListHeaderFooter("§b Willkommen auf §9TUM§7ine", "§6ShopKeeper §bUpdate§7: §bInfos auf GitHub");
 
         if(config.get(player.getName()) == null) {
             String rank = player.isOp() ? "§cAdmin" : "§eSpieler";
