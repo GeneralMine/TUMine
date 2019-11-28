@@ -26,8 +26,7 @@ public class JoinListener implements Listener {
             String rank = player.isOp() ? "§cAdmin" : "§eSpieler";
             config.set(player.getName(), rank);
         }
-        ;
-        ;
+        
         player.setPlayerListName(config.get(player.getName()) + " §7| §f" + player.getName());
     }
 
