@@ -34,4 +34,5 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         port: ${{ secrets.SSH_PORT }}
-        script: mv "/home/generalmine/server/minecraft/testServer/plugins/github/workspace/target/*" "/home/generalmine/server/minecraft/testServer/plugins/"
+        script: mv "/home/generalmine/server/minecraft/testServer/plugins/github/workspace/target/*" "/home/generalmine/server/minecraft/testServer/plugins"
+ 
