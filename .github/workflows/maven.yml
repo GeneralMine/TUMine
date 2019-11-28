@@ -27,6 +27,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "/home/runner/work/TUMine/TUMine/target/*.jar"
         target: "/home/generalmine/server/minecraft/"
+        strip_components: 3
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
