@@ -1,5 +1,10 @@
 # TUMine
 
+## All TUMine Plugins
+- TUMineMain (this) [https://github.com/GeneralMine/TUMine]
+- TUMine-Mail [https://github.com/GeneralMine/TUMineMail]
+- TUMineCity [https://github.com/HrMoritz/TUMineCity]
+
 ## APIs
 - https://github.com/MilkBowl/VaultAPI
 Doc: http://milkbowl.github.io/VaultAPI/
