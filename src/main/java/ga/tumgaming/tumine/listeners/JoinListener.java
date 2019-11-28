@@ -17,6 +17,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
         event.setJoinMessage("§7 Der Spieler §e" +player.getDisplayName() + "§7 hat den Server betreten");
 
         player.setPlayerListHeaderFooter("§b Willkommen auf §9TUM§7ine", "§6ShopKeeper §bUpdate§7: §bInfos auf GitHub");
@@ -25,7 +26,7 @@ public class JoinListener implements Listener {
             String rank = player.isOp() ? "§cAdmin" : "§eSpieler";
             config.set(player.getName(), rank);
         }
-
+        ;
         player.setPlayerListName(config.get(player.getName()) + " §7| §f" + player.getName());
     }
 
