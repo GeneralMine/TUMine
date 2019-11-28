@@ -1,9 +1,9 @@
 # TUMine
 
 ## All TUMine Plugins
-- TUMineMain[](https://github.com/GeneralMine/TUMine) (this)
-- TUMine-Mail[](https://github.com/GeneralMine/TUMineMail)
-- TUMineCity[](https://github.com/HrMoritz/TUMineCity)
+- [TUMineMain](https://github.com/GeneralMine/TUMine) (this)
+- [TUMine-Mail](https://github.com/GeneralMine/TUMineMail)
+- [TUMineCity](https://github.com/HrMoritz/TUMineCity)
 
 ## APIs
 - https://github.com/MilkBowl/VaultAPI
