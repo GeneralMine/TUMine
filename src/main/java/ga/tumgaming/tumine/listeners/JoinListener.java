@@ -27,6 +27,7 @@ public class JoinListener implements Listener {
             config.set(player.getName(), rank);
         }
         ;
+        ;
         player.setPlayerListName(config.get(player.getName()) + " §7| §f" + player.getName());
     }
 
