@@ -1,6 +1,9 @@
 name: Java CI
 
-on: [push]
+on: 
+  push:
+    branches: 
+      - develop
 
 jobs:
   build:
@@ -15,3 +18,11 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn install -B package --file pom.xml
+    - name: Copy single file to remote
+      uses: garygrossgarten/github-action-scp@release
+      with:
+          local: /home/runner/work/TUMine/TUMine/target/*.jar
+          remote: server/minecraft/testserver/plugins/
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_USERPASSWORD }}
