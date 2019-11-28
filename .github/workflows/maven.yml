@@ -23,6 +23,6 @@ jobs:
       with:
           local: /home/runner/work/TUMine/TUMine/target/*.jar
           remote: server/minecraft/testserver/plugins/
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_USERPASSWORD }}
