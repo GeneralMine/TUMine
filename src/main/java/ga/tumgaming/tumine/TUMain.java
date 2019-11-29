@@ -17,57 +17,57 @@ import java.util.logging.Logger;
 
 public class TUMain extends JavaPlugin {
 
-    private static Config ranks;
+	private static Config ranks;
 
-    private static Config shops;
+	private static Config shops;
 
-    private static Plugin plugin;
+	private static Plugin plugin;
 
-    @Override
-    public void onEnable() {
-        this.plugin = this;
+	@Override
+	public void onEnable() {
+		this.plugin = this;
 
-        ranks = new Config(this, "ranks");
-        shops = new Config(this, "shopkeeper");
+		ranks = new Config(this, "ranks");
+		shops = new Config(this, "shopkeeper");
 
-        registerEvents();
+		registerEvents();
 
-        ShopUtil.addShopmerald();
+		ShopUtil.addShopmerald();
 
-        log("Plugin erfolgreich geladen");
-    }
+		log("Plugin erfolgreich geladen");
+	}
 
-    /**
-     * logs a String in the console
-     *
-     * @param str logged String
-     */
-    public void log(String str) {
-        Logger.getLogger(str);
-    }
+	/**
+	 * logs a String in the console
+	 *
+	 * @param str logged String
+	 */
+	public void log(String str) {
+		Logger.getLogger(str);
+	}
 
-    private static void registerEvents() {
-        PluginManager pluginManager = Bukkit.getPluginManager();
+	private static void registerEvents() {
+		PluginManager pluginManager = Bukkit.getPluginManager();
 
-        pluginManager.registerEvents(new JoinListener(ranks), plugin);
-        pluginManager.registerEvents(new QuitListener(), plugin);
-        pluginManager.registerEvents(new ChatListener(ranks), plugin);
-        pluginManager.registerEvents(new SleepListener(), plugin);
+		pluginManager.registerEvents(new JoinListener(ranks), plugin);
+		pluginManager.registerEvents(new QuitListener(), plugin);
+		pluginManager.registerEvents(new ChatListener(ranks), plugin);
+		pluginManager.registerEvents(new SleepListener(), plugin);
 
-        pluginManager.registerEvents(new InteractListener(shops), plugin);
-        pluginManager.registerEvents(new InventoryListeners(), plugin);
-    }
+		pluginManager.registerEvents(new InteractListener(shops), plugin);
+		pluginManager.registerEvents(new InventoryListeners(), plugin);
+	}
 
-    public static Config getRanksConfig() {
-        return ranks;
-    }
+	public static Config getRanksConfig() {
+		return ranks;
+	}
 
-    public static Config getShopsConfig() {
-        return shops;
-    }
+	public static Config getShopsConfig() {
+		return shops;
+	}
 
-    public static Plugin getPlugin() {
-        return plugin;
-    }
+	public static Plugin getPlugin() {
+		return plugin;
+	}
 
 }
