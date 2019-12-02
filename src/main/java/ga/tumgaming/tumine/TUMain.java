@@ -1,5 +1,7 @@
 package ga.tumgaming.tumine;
 
+import ga.tumgaming.tumine.autoupdater.UpdateCommand;
+import ga.tumgaming.tumine.autoupdater.UpdateMethod;
 import ga.tumgaming.tumine.listeners.ChatListener;
 import ga.tumgaming.tumine.listeners.JoinListener;
 import ga.tumgaming.tumine.listeners.QuitListener;
@@ -33,6 +35,13 @@ public class TUMain extends JavaPlugin {
         registerEvents();
 
         ShopUtil.addShopmerald();
+
+        // Adding the update command
+        this.getCommand("update").setExecutor(new UpdateCommand(
+                "tumine",   // how the plugin name starts has to be the same and unique (without version)
+                1000,       // plugin will reload after 1000ms
+                UpdateMethod.OVERRIDE   // can be changed in the future
+        ));
 
         log("Plugin erfolgreich geladen");
     }
