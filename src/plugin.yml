@@ -8,3 +8,6 @@ depend:
    - Vault
 
 commands:
+   update:
+      description: Updates TUMine
+      usage: /update
