@@ -38,6 +38,7 @@ public class TUMain extends JavaPlugin {
 
         // Adding the update command
         this.getCommand("update").setExecutor(new UpdateCommand(
+                //TODO: standardise the prefix of the name
                 "tumine",   // how the plugin name starts has to be the same and unique (without version)
                 1000,       // plugin will reload after 1000ms
                 UpdateMethod.OVERRIDE   // can be changed in the future
