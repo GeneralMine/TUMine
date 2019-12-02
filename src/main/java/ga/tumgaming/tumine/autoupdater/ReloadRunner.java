@@ -2,6 +2,8 @@ package ga.tumgaming.tumine.autoupdater;
 
 import ga.tumgaming.tumine.TUMain;
 
+import java.awt.*;
+
 public class ReloadRunner implements Runnable {
 
         private boolean reload;
@@ -12,7 +14,10 @@ public class ReloadRunner implements Runnable {
 
         @Override
         public void run() {
-            if(reload) TUMain.getPlugin().getServer().reload();
+            if(reload) {
+                UpdateCommand.sendToAllWithPermission(Color.RED + "RELOADING NOW.");
+                TUMain.getPlugin().getServer().reload();
+            }
             else System.out.println("Reload was cancelled!");
         }
 
