@@ -37,4 +37,4 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         source: "/home/runner/work/TUMine/permissions.yml"
         target: "/home/generalmine/server/minecraft/testServer/plugins/TUMine/newVersions"
-        strip_components: 1
+        strip_components: 0
