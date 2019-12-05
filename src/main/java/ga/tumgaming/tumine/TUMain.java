@@ -11,6 +11,8 @@ import ga.tumgaming.tumine.shopKeeper.InventoryListeners;
 import ga.tumgaming.tumine.shopKeeper.ShopUtil;
 import ga.tumgaming.tumine.util.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,12 +39,15 @@ public class TUMain extends JavaPlugin {
         ShopUtil.addShopmerald();
 
         // Adding the update command
-        this.getCommand("update").setExecutor(new UpdateCommand(
-                //TODO: standardize the prefix of the name
-                "tumine",   // how the plugin name starts has to be the same and unique (without version)
-                1000,       // plugin will reload after 1000ms
-                UpdateMethod.OVERRIDE   // can be changed in the future
-        ));
+        PluginCommand updateCommand = this.getCommand("update");
+        if (updateCommand != null) {
+            updateCommand.setExecutor(new UpdateCommand(
+                    //TODO: standardize the prefix of the name
+                    "tumine",   // how the plugin name starts has to be the same and unique (without version)
+                    1000,       // plugin will reload after 1000ms
+                    UpdateMethod.OVERRIDE   // can be changed in the future
+            ));
+        }
 
         log("Plugin erfolgreich geladen");
     }
