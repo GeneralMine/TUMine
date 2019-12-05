@@ -1,18 +1,86 @@
 groups:
+  
   default:
     options:
       default: true
+      prefix: '&7[&8Guest&7]&f '
+      rank: 0
     permissions:
-    - mv.bypass.gamemode.*
-    - modifyworld.*
-  Admin:
-    permissions:
-    - mv.bypass.gamemode.*
-    - '*'
-    - '''*'''
+    -
+  Player:
     options:
-      prefix: ''
-      suffix: ''
+      prefix: '&7[&ePlayer&7]&f '
+      rank: 2
+    inheritance:
+    - default
+    permissions:
+    -
+  VIP:
+    options:
+      prefix: '&7[&3VIP&7]&f '
+      rank: 4
+    inheritance:
+    - Player
+    permissions:
+    -
+  VIP+:
+    options:
+      prefix: '&7[&3VIP&6+&7]&f '
+      rank: 5
+    inheritance:
+    - VIP
+    permissions:
+    -
+  Helper:
+    options:
+      prefix: '&7[&9Helper&7]&f '
+      rank: 10
+    inheritance:
+    - Player
+    permissions:
+    - spigot.kick
+    - minecraft.kick
+  Moderator:
+    options:
+      prefix: '&7[&1Moderator&7]&f '
+      rank: 11
+    inheritance:
+    - Helper
+    permissions:
+    - bukkit.command.tp
+    - minecraft.gamemode
+    - coreprotect.lookup
+    - coreprotect.rollback
+    - coreprotect.restore
+    - lwc.mod
+  Builder:
+    options:
+      prefix: '&7[&2Builder&7]&f '
+      rank: 12
+    inheritance:
+    - Helper
+    permissions:
+    - worldedit.*
+    - minecraft.gamemode
+  Developer:
+    options:
+      prefix: '&7[&5Developer&7]&f '
+      rank: 13
+    inheritance:
+    - Helper
+    permissions:
+    -
+  Admin:
+    options:
+      prefix: '&7[&cAdmin&7]&f '
+      rank: 20
+    inheritance:
+    - Moderator
+    - Developer
+    - Builder
+    permissions:
+    - '*'
+
 schema-version: 1
 users:
   1ad9daba-8d77-432d-b983-2fc6e1b214f8:
