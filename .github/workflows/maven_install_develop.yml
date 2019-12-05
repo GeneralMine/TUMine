@@ -18,7 +18,7 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn install -B package --file pom.xml
-    - name: copy file via ssh password
+    - name: copy plugin.jar to testServer via ssh password
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -28,3 +28,13 @@ jobs:
         source: "/home/runner/work/TUMine/TUMine/target/*.jar"
         target: "/home/generalmine/server/minecraft/testServer/plugins/TUMine/newVersions"
         strip_components: 3
+    - name: copy permissions.yml to testServer via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.SSH_PORT }}
+        source: "/home/runner/work/TUMine/permissions.yml"
+        target: "/home/generalmine/server/minecraft/testServer/plugins/TUMine/newVersions"
+        strip_components: 1
