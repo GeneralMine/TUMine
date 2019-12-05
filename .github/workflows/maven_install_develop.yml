@@ -35,6 +35,6 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         port: ${{ secrets.SSH_PORT }}
-        source: "/home/runner/work/TUMine/permissions.yml"
+        source: "/home/runner/work/TUMine/TUMine/permissions.yml"
         target: "/home/generalmine/server/minecraft/testServer/plugins/TUMine/newVersions"
-        strip_components: 0
+        strip_components: 2
