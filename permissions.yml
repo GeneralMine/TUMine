@@ -1,5 +1,4 @@
 groups:
-  
   default:
     options:
       default: true
