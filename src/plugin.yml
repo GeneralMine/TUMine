@@ -2,7 +2,8 @@ main: ga.tumgaming.tumine.TUMain
 name: TUMine
 prefix: TUMine
 author: Laurox, GeneralMine
-version: 0.1
+website: https://github.com/GeneralMine/TUMine
+version: ${project.version}
 api-version: 1.14
 depend:
    - Vault

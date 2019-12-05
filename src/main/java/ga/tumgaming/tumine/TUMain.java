@@ -29,12 +29,10 @@ public class TUMain extends JavaPlugin {
 
 		ranks = new Config(this, "ranks");
 		shops = new Config(this, "shopkeeper");
-
 		registerEvents();
 
 		ShopUtil.addShopmerald();
-
-		log("Plugin erfolgreich geladen");
+		log("Plugin Version " + getDescription().getVersion() + " erfolgreich geladen");
 	}
 
 	/**
