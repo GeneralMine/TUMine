@@ -4,6 +4,7 @@
 - [TUMineMain](https://github.com/GeneralMine/TUMine) (this)
 - [TUMineMail](https://github.com/GeneralMine/TUMineMail)
 - [TUMineCity](https://github.com/HrMoritz/TUMineCity)
+- [TUManySkillz](https://github.com/GeneralMine/TUManySkillz)
 
 ## APIs
 - https://github.com/MilkBowl/VaultAPI
