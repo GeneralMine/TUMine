@@ -1,12 +1,16 @@
 # TUMine
 
 ## All TUMine Plugins
-- [TUMineMain](https://github.com/GeneralMine/TUMine) (this)
+- [TUMine](https://github.com/GeneralMine/TUMine)
+- TUMineMain
 - [TUMineMail](https://github.com/GeneralMine/TUMineMail)
 - [TUMineCity](https://github.com/HrMoritz/TUMineCity)
 - [TUMineSkills](https://github.com/GeneralMine/TUMineSkills)
 - [TUMineTravel](https://github.com/GeneralMine/TUMineTravel/)
 - [TUMineMessage](https://github.com/GeneralMine/TUMineMessage)
+- TUMineAdventure
+- TUMineProfession
+- TUMineMoney
 ## APIs
 - https://github.com/MilkBowl/VaultAPI
 Doc: http://milkbowl.github.io/VaultAPI/
